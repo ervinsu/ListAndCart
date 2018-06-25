@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rvProductList"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="8dp"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        tools:listitem="@layout/product_list_row"/>
+
+    <android.support.v4.widget.NestedScrollView
+        android:id="@+id/bottom_sheet"
+        android:layout_width="match_parent"
+        android:layout_height="350dp"
+        android:background="@color/white"
+        app:behavior_hideable="true"
+        app:behavior_peekHeight="85dp"
+        app:layout_behavior="@string/bottom_sheet_behavior">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/substract"
+                android:layout_weight="1"/>
+
+            <ImageButton
+                android:layout_width="20dp"
+                android:layout_height="10dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="5dp"
+                android:background="@drawable/ic_menupsd"
+                android:layout_weight="1"/>
+
+            <LinearLayout
+                android:id="@+id/layoutEstimated"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="3dp"
+                android:orientation="horizontal">
+
+                <include
+                    layout="@layout/keranjang"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_weight="0.1"></include>
+
+
+                <LinearLayout
+
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:layout_weight="15">
+
+                    <TextView
+                        android:id="@+id/tvEstimatedPrice"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        android:text="Estimated Price"
+                        android:textSize="18sp" />
+
+                    <TextView
+                        android:id="@+id/tvTotalPrice"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        android:text="ini harga" />
+                </LinearLayout>
+
+                <ImageButton
+                    android:layout_width="3dp"
+                    android:layout_height="30dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="7dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/ic_next" />
+
+            </LinearLayout>
+
+            <ScrollView
+                android:id="@+id/svCartList"
+                android:layout_width="match_parent"
+                android:layout_height="fill_parent">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="fill_parent"
+                    >
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/rvCartList"
+                        android:layout_width="match_parent"
+                        android:layout_height="fill_parent"
+                        android:layout_marginTop="18dp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        tools:listitem="@layout/cart_list_row">
+
+                    </android.support.v7.widget.RecyclerView>
+                </LinearLayout>
+            </ScrollView>
+        </LinearLayout>
+    </android.support.v4.widget.NestedScrollView>
+
+</android.support.design.widget.CoordinatorLayout>
