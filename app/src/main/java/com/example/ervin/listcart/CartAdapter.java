@@ -76,11 +76,20 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ProductViewHol
         holder.btnIncrease.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                holder.edtQty.setText(++cartList.get(position).productQty+"");
                 Log.d("qtynya",product.productQty+"");
-                ubah(cartList.get(position).productId, ++cartList.get(position).productQty, userID);
                 notifyDataSetChanged();
             }
         });
+
+        holder.btnIncrease.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                    ubah(cartList.get(position).productId, ++cartList.get(position).productQty, userID);
+
+            }
+        });
+
 
         holder.btnDecrease.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -144,7 +153,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ProductViewHol
                         try {
                             if (response.getString("status").equals("OK")) {
                                 cartList.clear();
-                                MainActivity.show_cart(MainActivity.urlbawah,1);
+                                MainActivity.show_cart(MainActivity.urlbawah_new,1);
                             }
                         } catch (JSONException e1) {
                             e1.printStackTrace();

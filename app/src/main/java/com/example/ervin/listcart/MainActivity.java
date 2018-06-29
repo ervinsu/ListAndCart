@@ -7,8 +7,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
+import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -38,11 +39,13 @@ public class MainActivity extends AppCompatActivity {
     private static List<Product> cartList = new ArrayList<>();
     private static Context context;
     private static CartAdapter adapterRvBelow;
-    private static ProductAdapter adapterRvTop;
+    private static ProductRepurchaseAdapter adapterRvTop;
     private static int totalPrice = 0;
     private static int count = 0;
+    private static RelativeLayout pbRepurchase;
     static String url = "http://pharmanet.apodoc.id/select_repurchase_owner.php?id=";
     static String urlbawah = "http://pharmanet.apodoc.id/selectCartOwner.php";
+    static String urlbawah_new= "http://pharmanet.apodoc.id/select_currentCart_owner_new.php?id=";
 
 
     @Override
@@ -53,6 +56,7 @@ public class MainActivity extends AppCompatActivity {
         queue = Volley.newRequestQueue(this);
         tvTotalPrice = findViewById(R.id.tvTotalPrice);
         mBadge = findViewById(R.id.badge);
+        pbRepurchase = findViewById(R.id.progressBarRePurchase);
         initBottomSheet();
         initiateTopAdapter();
         initiateBelowAdapter();
@@ -69,13 +73,12 @@ public class MainActivity extends AppCompatActivity {
         show_view(cartList,url,1);
     }
 
-    public  void initiateBelowAdapter(){
+    public void initiateBelowAdapter(){
         recyclerViewCartList = findViewById(R.id.rvCartList);
         recyclerViewCartList.setHasFixedSize(true);
         LinearLayoutManager setLayout = new LinearLayoutManager(getApplicationContext(),LinearLayoutManager.VERTICAL,false);
         recyclerViewCartList.setLayoutManager(setLayout);
-        show_cart(urlbawah,1);
-
+        show_cart(urlbawah_new,1);
     }
 
     public static void refresh_cart(List<Product> cartList){
@@ -92,64 +95,112 @@ public class MainActivity extends AppCompatActivity {
         recyclerViewCartList.setAdapter(adapterRvBelow);
     }
 
-    public static void show_cart(String urlbawah, int userID) {
+//    public static void show_cart(String urlbawah, int userID) {
+//
+//        JSONObject objAdd = new JSONObject();
+//        try {
+//            JSONArray arrData = new JSONArray();
+//            JSONObject objDetail = new JSONObject();
+//            objDetail.put("EntryID", userID);
+//            arrData.put(objDetail);
+//            objAdd.put("data", arrData);
+//        } catch (JSONException e1) {
+//            e1.printStackTrace();
+//        }
+//        JsonObjectRequest rec = new JsonObjectRequest(urlbawah, objAdd, new Response.Listener<JSONObject>() {
+//            @Override
+//            public void onResponse(JSONObject response) {
+//                JSONArray products = null;
+//                try {
+//                    products = response.getJSONArray("result");
+//                    cartList.clear();
+//                    count=0;
+//                    totalPrice=0;
+//                    for (int i = 0; i < products.length(); i++) {
+//                        try {
+//                            recyclerViewCartList.setVisibility(View.VISIBLE);
+//                            JSONObject obj = products.getJSONObject(i);
+//                            cartList.add(new Product(obj.getString("ProductName")
+//                                    ,obj.getString("ProductID")
+//                                    ,obj.getInt("CartProductPrice"),
+//                                    obj.getInt("CartProductQty")
+//                            ));
+//
+//                            totalPrice += obj.getInt("CartProductQty")*obj.getInt("CartProductPrice");
+//                            count += obj.getInt("CartProductQty");
+//                        } catch (JSONException e1) {
+//                            e1.printStackTrace();
+//                            Toast.makeText(context, e1.getMessage(), Toast.LENGTH_SHORT).show();
+//                        }
+//                    }
+//                    tvTotalPrice.setText(totalPrice+"");
+//                    mBadge.setNumber(count);
+//                    //Toast.makeText(context, cartList.size()+"", Toast.LENGTH_SHORT).show();
+//                    adapterRvBelow = new CartAdapter(context,cartList,1);
+//                    recyclerViewCartList.setAdapter(adapterRvBelow);
+//
+//                } catch (JSONException e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//        }, new Response.ErrorListener() {
+//            @Override
+//            public void onErrorResponse(VolleyError error) {
+////                Toast.makeText(Main2Activity.this, "error", Toast.LENGTH_SHORT).show();
+//            }
+//        });
+//        queue.add(rec);
+//    }
+public static void show_cart(String urlbawah, int UserID) {
 
-        JSONObject objAdd = new JSONObject();
-        try {
-            JSONArray arrData = new JSONArray();
-            JSONObject objDetail = new JSONObject();
-            objDetail.put("EntryID", userID);
-            arrData.put(objDetail);
-            objAdd.put("data", arrData);
-        } catch (JSONException e1) {
-            e1.printStackTrace();
-        }
-        JsonObjectRequest rec = new JsonObjectRequest(urlbawah, objAdd, new Response.Listener<JSONObject>() {
-            @Override
-            public void onResponse(JSONObject response) {
-                JSONArray products = null;
-                try {
-                    products = response.getJSONArray("result");
-                    cartList.clear();
-                    count=0;
-                    totalPrice=0;
-                    for (int i = 0; i < products.length(); i++) {
-                        try {
-                            recyclerViewCartList.setVisibility(View.VISIBLE);
-                            JSONObject obj = products.getJSONObject(i);
-                            cartList.add(new Product(obj.getString("ProductName")
-                                    ,obj.getString("ProductID")
-                                    ,obj.getInt("CartProductPrice"),
-                                    obj.getInt("CartProductQty")
-                            ));
-
-                            totalPrice += obj.getInt("CartProductQty")*obj.getInt("CartProductPrice");
-                            count += obj.getInt("CartProductQty");
-                        } catch (JSONException e1) {
-                            e1.printStackTrace();
-                            Toast.makeText(context, e1.getMessage(), Toast.LENGTH_SHORT).show();
-                        }
+    pbRepurchase.setVisibility(View.VISIBLE);
+    JsonObjectRequest rec = new JsonObjectRequest(urlbawah+UserID, null, new Response.Listener<JSONObject>() {
+        @Override
+        public void onResponse(JSONObject response) {
+            JSONArray products = null;
+            try {
+                products = response.getJSONArray("result");
+                cartList.clear();
+                count=0;
+                totalPrice=0;
+                for (int i = 0; i < products.length(); i++) {
+                    try {
+                        recyclerViewCartList.setVisibility(View.VISIBLE);
+                        JSONObject obj = products.getJSONObject(i);
+                        cartList.add(new Product(obj.getString("ProductName")
+                                ,obj.getString("ProductID")
+                                ,obj.getInt("CartProductPrice"),
+                                obj.getInt("CartProductQty")
+                        ));
+                        pbRepurchase.setVisibility(View.GONE);
+                        totalPrice += obj.getInt("CartProductQty")*obj.getInt("CartProductPrice");
+                        count += obj.getInt("CartProductQty");
+                    } catch (JSONException e1) {
+                        e1.printStackTrace();
+                        Toast.makeText(context, e1.getMessage(), Toast.LENGTH_SHORT).show();
                     }
-                    tvTotalPrice.setText(totalPrice+"");
-                    mBadge.setNumber(count);
-                    //Toast.makeText(context, cartList.size()+"", Toast.LENGTH_SHORT).show();
-                    adapterRvBelow = new CartAdapter(context,cartList,1);
-                    recyclerViewCartList.setAdapter(adapterRvBelow);
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
                 }
+                tvTotalPrice.setText(totalPrice+"");
+                mBadge.setNumber(count);
+                //Toast.makeText(context, cartList.size()+"", Toast.LENGTH_SHORT).show();
+                adapterRvBelow = new CartAdapter(context,cartList,1);
+                recyclerViewCartList.setAdapter(adapterRvBelow);
+
+            } catch (JSONException e) {
+                e.printStackTrace();
             }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
+        }
+    }, new Response.ErrorListener() {
+        @Override
+        public void onErrorResponse(VolleyError error) {
 //                Toast.makeText(Main2Activity.this, "error", Toast.LENGTH_SHORT).show();
-            }
-        });
-        queue.add(rec);
-    }
+        }
+    });
+    queue.add(rec);
+}
 
     public static void show_view(final List<Product> cartList, String url, int userID){
+        pbRepurchase.setVisibility(View.VISIBLE);
         JsonObjectRequest rec = new JsonObjectRequest(url+userID, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
@@ -163,10 +214,13 @@ public class MainActivity extends AppCompatActivity {
                         try {
                             recyclerViewProductList.setVisibility(View.VISIBLE);
                             JSONObject obj = products.getJSONObject(i);
-                            productList.add(new Product(obj.getString("ProductName")
-                                    ,obj.getString("ProductID")
+                            productList.add(new Product(obj.getString("ProductID")
+                                    ,obj.getString("ProductName")
+                                    ,obj.getString("MenuImage")
                                     ,obj.getInt("ProductPrice")
-                                    ,obj.getInt("OrderProductQty")
+                                    ,obj.getInt("OutletProductStockQty")
+                                    ,obj.getDouble("OutletLevelStock")
+                                    ,obj.getInt("OutletProductQtyRekomendation")
                             ));
 
 
@@ -176,8 +230,8 @@ public class MainActivity extends AppCompatActivity {
                         }
 
                     }
-
-                    adapterRvTop = new ProductAdapter(context, productList, cartList);
+                    pbRepurchase.setVisibility(View.GONE);
+                    adapterRvTop = new ProductRepurchaseAdapter(context, productList, cartList);
                     recyclerViewProductList.setAdapter(adapterRvTop);
 
                 } catch (JSONException e) {
