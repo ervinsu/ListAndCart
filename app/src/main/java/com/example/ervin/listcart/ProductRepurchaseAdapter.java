@@ -26,9 +26,9 @@ import org.json.JSONObject;
 import java.util.List;
 
 public class ProductRepurchaseAdapter extends RecyclerView.Adapter<ProductRepurchaseAdapter.ProductViewHolder> {
-    Context context;
-    List<Product> productList;
-    List<Product> cartList;
+    private Context context;
+    private List<Product> productList;
+    private List<Product> cartList;
 
     public ProductRepurchaseAdapter(Context context, List<Product> productList, List<Product>cartList) {
         this.context = context;
