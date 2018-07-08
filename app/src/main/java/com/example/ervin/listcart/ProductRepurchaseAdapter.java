@@ -39,7 +39,7 @@ public class ProductRepurchaseAdapter extends RecyclerView.Adapter<ProductRepurc
     @NonNull
     @Override
     public ProductRepurchaseAdapter.ProductViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.product_list_row, parent, false);
+        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.product_list_row_repurchase, parent, false);
         return new ProductViewHolder(itemView);
     }
 

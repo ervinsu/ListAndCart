@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">ListCart</string>
+    <string name="nama_produk">Nama Produk</string>
+    <string name="tambah">Tambah</string>
+    <string name="stok">Stok</string>
+    <string name="lv_stok">lv Stok</string>
+    <string name="harga">Harga</string>
+    <string name="rekomen">Rekomen</string>
+    <string name="tambah_produk">Tambah</string>
 </resources>

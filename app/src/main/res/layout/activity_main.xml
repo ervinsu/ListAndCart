@@ -18,45 +18,55 @@
     </RelativeLayout>
 
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingLeft="6dp"
-        android:orientation="horizontal"
-        android:layout_weight="10">
+        android:orientation="horizontal">
 
         <TextView
-            android:text="Nama Produk"
-            android:layout_width="110dp"
+            android:text="@string/nama_produk"
+            android:layout_width="100dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1" />
+            android:layout_weight="0.2" />
 
         <TextView
-            android:text="Stok"
-            android:layout_width="40dp"
+            android:text="@string/stok"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:paddingRight="5dp"
+            android:layout_weight="0.1"
             />
 
         <TextView
-            android:layout_width="50dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="lv Stok"
+            android:layout_weight="0.1"
+            android:paddingRight="3dp"
+            android:text="@string/lv_stok"
             />
         <TextView
             android:id="@+id/tvProductPrice"
-            android:layout_width="45dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Harga"
+            android:layout_weight="0.1"
+            android:paddingRight="4dp"
+            android:text="@string/harga"
             />
 
         <TextView
             android:id="@+id/tvProductQtyRekomendasi"
-            android:layout_width="60dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Rekomen"
+            android:layout_weight="0.1"
+            android:text="@string/rekomen" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.3"
+            android:text="@string/tambah_produk"
+
+
             />
     </LinearLayout>
 
@@ -64,10 +74,9 @@
         android:id="@+id/rvProductList"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:paddingLeft="8dp"
         android:paddingTop="16dp"
-        android:paddingLeft="2dp"
-        android:paddingRight="16dp"
-        tools:listitem="@layout/product_list_row"/>
+        tools:listitem="@layout/product_list_row_repurchase" />
 
     <android.support.v4.widget.NestedScrollView
         android:id="@+id/bottom_sheet"

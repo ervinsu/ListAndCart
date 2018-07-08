@@ -1,9 +1,11 @@
 package com.example.ervin.listcart;
 
 import android.content.Context;
+import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
+import android.text.InputType;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -11,6 +13,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -34,6 +38,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ProductViewHol
     Context context;
     List<Product> cartList;
     int userID;
+    boolean isStoppedClicked = true;
 
     public CartAdapter(Context context, List<Product> cartList, int userID) {
         this.context = context;
@@ -57,14 +62,17 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ProductViewHol
         holder.edtQty.setText(product.productQty + "");
 
         holder.edtQty.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                    @Override
+                    public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
 
                 if (actionId == EditorInfo.IME_ACTION_DONE) {
+                    holder.edtQty.setOnEditorActionListener(new DoneOnEditorActionListener());
+                    //holder.edtQty.setInputType(InputType.TYPE_NULL);
                     if (holder.edtQty.getText().toString().equals("")){
                         holder.edtQty.setText("0");
                     }else {
                         int input = Integer.parseInt(holder.edtQty.getText().toString());
+                        product.productQty=input;
                         ubah(cartList.get(position).productId, input, userID);
                     }
                     return true;
@@ -76,19 +84,18 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ProductViewHol
         holder.btnIncrease.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                holder.edtQty.setText(++cartList.get(position).productQty+"");
-                Log.d("qtynya",product.productQty+"");
+                holder.edtQty.setText(++product.productQty+"");
+
+                Log.d("qtynya",product.productQty+"sebelumnya");
+                if(isStoppedClicked){
+                    isStoppedClicked=false;
+                    new UpdateDataIncrease().execute(product);
+                }
+
                 notifyDataSetChanged();
             }
         });
 
-        holder.btnIncrease.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                    ubah(cartList.get(position).productId, ++cartList.get(position).productQty, userID);
-
-            }
-        });
 
 
         holder.btnDecrease.setOnClickListener(new View.OnClickListener() {
@@ -96,14 +103,71 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ProductViewHol
             public void onClick(View v) {
                 Log.d("qtynya",product.productQty+"");
                 if (product.productQty==0) {
-                    Log.d("prdId",cartList.get(position).productId+"");
+                    Log.d("prdId",product.productId+"");
                     delete(cartList.get(position).productId, cartList.get(position),userID);
                 }else {
-                    ubah(cartList.get(position).productId, --cartList.get(position).productQty,userID);
+                    holder.edtQty.setText(--product.productQty+"");
+                    Log.d("qtynya",product.productQty+"");
+                    if(isStoppedClicked){
+                        isStoppedClicked=false;
+                        new UpdateDataDecrease().execute(product);
+                    }
+                    notifyDataSetChanged();
                 }
                 notifyDataSetChanged();
             }
         });
+    }
+
+    private class UpdateDataIncrease extends AsyncTask<Product,Product,Void> {
+
+        @Override
+        protected Void doInBackground(Product... products) {
+            Product product = products[0];
+            ubah(product.productId, product.productQty, userID);
+            Log.d("TAGGG", "doInBackground: "+product.productQty);
+
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            isStoppedClicked=true;
+            Log.d("TAGG","do in background kelar");
+        }
+    }
+
+
+    class DoneOnEditorActionListener implements TextView.OnEditorActionListener {
+        @Override
+        public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+            if (actionId == EditorInfo.IME_ACTION_DONE) {
+                InputMethodManager imm = (InputMethodManager)v.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+                return true;
+            }
+            return false;
+        }
+    }
+
+    private class UpdateDataDecrease extends AsyncTask<Product,Product,Void> {
+
+        @Override
+        protected Void doInBackground(Product... products) {
+            Product product = products[0];
+            ubah(product.productId, product.productQty, userID);
+            Log.d("TAGGG", "doInBackground: "+product.productQty);
+
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            isStoppedClicked=true;
+            Log.d("TAGG","do in background kelar");
+        }
     }
 
     @Override
@@ -152,8 +216,8 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ProductViewHol
                     public void onResponse(JSONObject response) {
                         try {
                             if (response.getString("status").equals("OK")) {
-                                cartList.clear();
-                                MainActivity.show_cart(MainActivity.urlbawah_new,1);
+                                //cartList.clear();
+                               // MainActivity.show_cart(MainActivity.urlbawah_new,1);
                             }
                         } catch (JSONException e1) {
                             e1.printStackTrace();
