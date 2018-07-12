@@ -38,36 +38,39 @@
     <LinearLayout
         android:paddingTop="5dp"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="40dp"
         android:layout_weight="1">
 
         <ImageButton
             android:id="@+id/btnDecrease"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="30dp"
+            android:layout_height="match_parent"
             android:paddingRight="10dp"
             android:paddingLeft="10dp"
             android:paddingBottom="10dp"
             android:paddingTop="10dp"
-            android:background="@drawable/ic_remove_black_24dp"
-            android:layout_weight="1"/>
+            android:background="@drawable/bordertrans1"
+            android:src="@drawable/ic_remove_black_24dp"
+            android:layout_weight="1" />
 
         <EditText
             android:id="@+id/edtQty"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="35dp"
+            android:layout_height="match_parent"
             android:layout_weight="1"
             android:imeOptions="actionDone"
             android:inputType="number"
             android:text="0"
             android:textAlignment="center"
-            android:textSize="10dp" />
+            android:textSize="10dp"
+            android:background="@drawable/bordertrans"/>
         <ImageButton
             android:id="@+id/btnIncrease"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/ic_add_black_24dp"
-            android:layout_weight="1"/>
+            android:layout_width="30dp"
+            android:layout_height="match_parent"
+            android:background="@drawable/bordertrans2"
+            android:layout_weight="1"
+            android:src="@drawable/ic_add_black_24dp"/>
 
     </LinearLayout>
 

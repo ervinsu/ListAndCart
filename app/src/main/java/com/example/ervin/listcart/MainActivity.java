@@ -24,6 +24,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -89,68 +91,24 @@ public class MainActivity extends AppCompatActivity {
             totalPrice+= cartList.get(i).productPrice*cartList.get(i).productQty;
             count += cartList.get(i).productQty;
         }
-        tvTotalPrice.setText(totalPrice+"");
+        tvTotalPrice.setText(ConvertNominal(totalPrice));
         mBadge.setNumber(count);
         adapterRvBelow = new CartAdapter(context,cartList,1);
         recyclerViewCartList.setAdapter(adapterRvBelow);
     }
 
-//    public static void show_cart(String urlbawah, int userID) {
-//
-//        JSONObject objAdd = new JSONObject();
-//        try {
-//            JSONArray arrData = new JSONArray();
-//            JSONObject objDetail = new JSONObject();
-//            objDetail.put("EntryID", userID);
-//            arrData.put(objDetail);
-//            objAdd.put("data", arrData);
-//        } catch (JSONException e1) {
-//            e1.printStackTrace();
-//        }
-//        JsonObjectRequest rec = new JsonObjectRequest(urlbawah, objAdd, new Response.Listener<JSONObject>() {
-//            @Override
-//            public void onResponse(JSONObject response) {
-//                JSONArray products = null;
-//                try {
-//                    products = response.getJSONArray("result");
-//                    cartList.clear();
-//                    count=0;
-//                    totalPrice=0;
-//                    for (int i = 0; i < products.length(); i++) {
-//                        try {
-//                            recyclerViewCartList.setVisibility(View.VISIBLE);
-//                            JSONObject obj = products.getJSONObject(i);
-//                            cartList.add(new Product(obj.getString("ProductName")
-//                                    ,obj.getString("ProductID")
-//                                    ,obj.getInt("CartProductPrice"),
-//                                    obj.getInt("CartProductQty")
-//                            ));
-//
-//                            totalPrice += obj.getInt("CartProductQty")*obj.getInt("CartProductPrice");
-//                            count += obj.getInt("CartProductQty");
-//                        } catch (JSONException e1) {
-//                            e1.printStackTrace();
-//                            Toast.makeText(context, e1.getMessage(), Toast.LENGTH_SHORT).show();
-//                        }
-//                    }
-//                    tvTotalPrice.setText(totalPrice+"");
-//                    mBadge.setNumber(count);
-//                    //Toast.makeText(context, cartList.size()+"", Toast.LENGTH_SHORT).show();
-//                    adapterRvBelow = new CartAdapter(context,cartList,1);
-//                    recyclerViewCartList.setAdapter(adapterRvBelow);
-//
-//                } catch (JSONException e) {
-//                    e.printStackTrace();
-//                }
-//            }
-//        }, new Response.ErrorListener() {
-//            @Override
-//            public void onErrorResponse(VolleyError error) {
-////                Toast.makeText(Main2Activity.this, "error", Toast.LENGTH_SHORT).show();
-//            }
-//        });
-//        queue.add(rec);
-//    }
+    public static void refresh_total_cart(List<Product> cartList){
+        count=0;
+        totalPrice=0;
+
+        for (int i = 0; i < cartList.size(); i++) {
+            totalPrice+= cartList.get(i).productPrice*cartList.get(i).productQty;
+            count += cartList.get(i).productQty;
+        }
+        tvTotalPrice.setText(ConvertNominal(totalPrice));
+        mBadge.setNumber(count);
+    }
+
 public static void show_cart(String urlbawah, int UserID) {
 
     pbRepurchase.setVisibility(View.VISIBLE);
@@ -180,7 +138,7 @@ public static void show_cart(String urlbawah, int UserID) {
                         Toast.makeText(context, e1.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 }
-                tvTotalPrice.setText(totalPrice+"");
+                tvTotalPrice.setText(ConvertNominal(totalPrice));
                 mBadge.setNumber(count);
                 //Toast.makeText(context, cartList.size()+"", Toast.LENGTH_SHORT).show();
                 adapterRvBelow = new CartAdapter(context,cartList,1);
@@ -247,9 +205,23 @@ public static void show_cart(String urlbawah, int UserID) {
         queue.add(rec);
     }
 
+    public static String ConvertNominal(int input){
+        DecimalFormat df = (DecimalFormat) DecimalFormat.getCurrencyInstance();
+        DecimalFormatSymbols dfs = new DecimalFormatSymbols();
+        dfs.setCurrencySymbol("Rp. ");
+        dfs.setMonetaryDecimalSeparator(',');
+        dfs.setGroupingSeparator('.');
+        df.setDecimalFormatSymbols(dfs);
+        df.setMaximumFractionDigits(0);
+        String hsl = df.format(input);
+        return hsl;
+    }
+
     private void initBottomSheet() {
         //BOTTOM SHEET STATE
         View bottomSheet = findViewById(R.id.bottom_sheet);
+        mBadge.setMaxTextLength(4);
+        mBadge.setTextSize((float) 30);
         mBottomSheetBehavior = BottomSheetBehavior.from(bottomSheet);
         mBottomSheetBehavior.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
             @Override

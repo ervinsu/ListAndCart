@@ -58,7 +58,8 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ProductViewHol
 
         final Product product = cartList.get(position);
         holder.tvCartProductName.setText(product.productName);
-        holder.tvCartProductPrice.setText(product.productPrice + "");
+        holder.tvCartProductPrice.setText(MainActivity.ConvertNominal(product.productPrice));
+
         holder.edtQty.setText(product.productQty + "");
 
         holder.edtQty.setOnEditorActionListener(new TextView.OnEditorActionListener() {
@@ -218,6 +219,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ProductViewHol
                             if (response.getString("status").equals("OK")) {
                                 //cartList.clear();
                                // MainActivity.show_cart(MainActivity.urlbawah_new,1);
+                                MainActivity.refresh_total_cart(cartList);
                             }
                         } catch (JSONException e1) {
                             e1.printStackTrace();

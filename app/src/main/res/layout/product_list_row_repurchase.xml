@@ -37,23 +37,22 @@
         <TextView
             android:id="@+id/tvProductQtyOutlet"
             tools:text="Stok"
-            android:layout_width="50dp"
+            android:layout_width="30dp"
             android:layout_height="wrap_content"
-            android:paddingRight="15dp"
             android:text="TextView"
             />
 
         <TextView
             android:id="@+id/tvProductQtyLvl"
-            android:layout_width="50dp"
+            android:layout_width="30dp"
             android:layout_height="wrap_content"
             android:text="TextView"
-            android:paddingRight="10dp"
+            android:paddingRight="5dp"
             tools:text="lvl Stok"
             />
         <TextView
             android:id="@+id/tvProductPrice"
-            android:layout_width="70dp"
+            android:layout_width="80dp"
             android:layout_height="wrap_content"
             android:text="TextView"
             tools:text="Harga"
@@ -61,7 +60,7 @@
 
         <TextView
             android:id="@+id/tvProductQtyRekomendasi"
-            android:layout_width="20dp"
+            android:layout_width="30dp"
             android:layout_height="wrap_content"
             tools:text="Rekomen"
             />

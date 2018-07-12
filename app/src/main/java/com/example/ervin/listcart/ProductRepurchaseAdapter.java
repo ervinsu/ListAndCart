@@ -48,7 +48,7 @@ public class ProductRepurchaseAdapter extends RecyclerView.Adapter<ProductRepurc
         final Product product = productList.get(position);
         holder.tvProductID.setText(product.productId);
         holder.tvProductName.setText(product.productName);
-        holder.tvProductPrice.setText(product.productPrice+"");
+        holder.tvProductPrice.setText(MainActivity.ConvertNominal(product.productPrice));
         holder.tvProdcutQtyOutlet.setText(product.productQtyOutlet+"");
         holder.tvProductQtyLvl.setText(product.getProductQtyLvl+"");
         holder.tvProductQtyRekomendasi.setText(product.productQtyRekomendasi+"");
