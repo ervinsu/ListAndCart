@@ -17,57 +17,68 @@
             />
     </RelativeLayout>
 
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingLeft="6dp"
         android:orientation="horizontal">
 
+        <android.support.v7.widget.AppCompatImageView
+            android:id="@+id/ivProductMenuImage"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginRight="3dp"
+            android:layout_weight="0.05"/>
+
         <TextView
+            android:id="@+id/tvProductName"
             android:text="@string/nama_produk"
-            android:layout_width="100dp"
-            android:layout_height="wrap_content"
+            android:layout_width="80dp"
+            android:layout_height="match_parent"
             android:layout_weight="0.2" />
 
         <TextView
+            android:id="@+id/tvProductQtyOutlet"
             android:text="@string/stok"
-            android:layout_width="wrap_content"
+            android:layout_width="30dp"
             android:layout_height="wrap_content"
-            android:paddingRight="5dp"
             android:layout_weight="0.1"
             />
 
         <TextView
-            android:layout_width="wrap_content"
+            android:id="@+id/tvProductQtyLvl"
+            android:layout_width="30dp"
+            android:paddingLeft="10dp"
             android:layout_height="wrap_content"
+            android:paddingRight="5dp"
             android:layout_weight="0.1"
-            android:paddingRight="3dp"
             android:text="@string/lv_stok"
             />
         <TextView
             android:id="@+id/tvProductPrice"
-            android:layout_width="wrap_content"
+            android:layout_width="70dp"
+            android:textAlignment="center"
             android:layout_height="wrap_content"
-            android:layout_weight="0.1"
-            android:paddingRight="4dp"
             android:text="@string/harga"
+            android:layout_weight="0.1"
             />
 
         <TextView
             android:id="@+id/tvProductQtyRekomendasi"
-            android:layout_width="wrap_content"
+            android:layout_width="60dp"
             android:layout_height="wrap_content"
+            android:text="@string/rekomen"
             android:layout_weight="0.1"
-            android:text="@string/rekomen" />
+            />
 
         <TextView
+            android:id="@+id/btnAdd"
+            android:paddingLeft="10dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="0.3"
-            android:text="@string/tambah_produk"
+            android:text="@string/tambah"/>
 
-
-            />
     </LinearLayout>
 
     <android.support.v7.widget.RecyclerView
